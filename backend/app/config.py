@@ -49,7 +49,13 @@ def cors_origin_regex() -> str | None:
         return None
     if raw:
         return raw
+    # Default LAN regex for local mobile testing only (disabled in production Docker).
     return (
         r"https?://(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}|"
         r"10\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?"
     )
+
+
+def dataset_is_available() -> bool:
+    """True when UCI HAR test inertial files exist (required for GET /sample only)."""
+    return (DATA_DIR / "test" / "Inertial Signals" / "body_acc_x_test.txt").is_file()

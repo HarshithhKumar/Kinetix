@@ -3,7 +3,7 @@ from typing import Dict
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from .config import cors_origin_regex, parse_cors_origins
+from .config import cors_origin_regex, dataset_is_available, parse_cors_origins
 from .data_loader import get_raw_sample
 from .model import predict_activity
 from .preprocessing import preprocess_sensor_data
@@ -26,11 +26,19 @@ app.add_middleware(CORSMiddleware, **_cors_kwargs)
 
 @app.get("/health")
 def health_check() -> Dict[str, str]:
-    return {"status": "ok"}
+    return {"status": "ok", "service": "kinetix-har-api"}
 
 
 @app.get("/sample", response_model=SampleResponse)
 def get_sample() -> SampleResponse:
+    if not dataset_is_available():
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "UCI HAR dataset not available in this deployment. "
+                "POST /predict accepts a 128×6 sensor window directly."
+            ),
+        )
     try:
         payload = get_raw_sample()
         return SampleResponse(**payload)
