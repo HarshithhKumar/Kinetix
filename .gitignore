@@ -1,0 +1,42 @@
+# Environment
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+
+# Node
+node_modules/
+frontend/dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# UCI HAR dataset (~60 MB) — download separately (see README.md)
+data/UCI HAR Dataset/
+
+# Legacy large numpy artifacts (not used by inference pipeline)
+models/*.npy
+models/kinetix_lstm_best.keras
+
+# Training checkpoints / local-only
+*.log

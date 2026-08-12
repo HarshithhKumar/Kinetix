@@ -1,0 +1,126 @@
+{
+  "evaluated_at": "2026-08-12T17:04:14.161959+00:00",
+  "pipeline": "raw UCI HAR test inertial -> StandardScaler (once) -> LSTM",
+  "test_samples": 2947,
+  "accuracy": 0.8690193417034272,
+  "accuracy_percentage": 86.9,
+  "macro_precision": 0.8725182887870382,
+  "macro_recall": 0.8727246613943164,
+  "macro_f1": 0.8714562979131563,
+  "weighted_precision": 0.8694606514872385,
+  "weighted_recall": 0.8690193417034272,
+  "weighted_f1": 0.8681137065473554,
+  "per_class": {
+    "WALKING": {
+      "precision": 0.9686847599164927,
+      "recall": 0.9354838709677419,
+      "f1_score": 0.9517948717948718,
+      "support": 496
+    },
+    "WALKING_UPSTAIRS": {
+      "precision": 0.9864864864864865,
+      "recall": 0.9299363057324841,
+      "f1_score": 0.9573770491803278,
+      "support": 471
+    },
+    "WALKING_DOWNSTAIRS": {
+      "precision": 0.9025974025974026,
+      "recall": 0.9928571428571429,
+      "f1_score": 0.9455782312925171,
+      "support": 420
+    },
+    "SITTING": {
+      "precision": 0.7528604118993135,
+      "recall": 0.670061099796334,
+      "f1_score": 0.709051724137931,
+      "support": 491
+    },
+    "STANDING": {
+      "precision": 0.7787456445993032,
+      "recall": 0.8402255639097744,
+      "f1_score": 0.8083182640144665,
+      "support": 532
+    },
+    "LAYING": {
+      "precision": 0.8457350272232305,
+      "recall": 0.8677839851024208,
+      "f1_score": 0.8566176470588235,
+      "support": 537
+    }
+  },
+  "confusion_matrix": [
+    [
+      464,
+      3,
+      29,
+      0,
+      0,
+      0
+    ],
+    [
+      15,
+      438,
+      16,
+      2,
+      0,
+      0
+    ],
+    [
+      0,
+      3,
+      417,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      329,
+      103,
+      59
+    ],
+    [
+      0,
+      0,
+      0,
+      59,
+      447,
+      26
+    ],
+    [
+      0,
+      0,
+      0,
+      47,
+      24,
+      466
+    ]
+  ],
+  "activity_labels": [
+    "WALKING",
+    "WALKING_UPSTAIRS",
+    "WALKING_DOWNSTAIRS",
+    "SITTING",
+    "STANDING",
+    "LAYING"
+  ],
+  "training": {
+    "architecture": "BiLSTM(128) -> BN -> Dropout -> LSTM(64) -> Dropout -> Dense(64) -> Dense(6)",
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "batch_size": 64,
+    "epochs_trained": 80,
+    "best_epoch": 78,
+    "max_epochs": 80,
+    "parameters": 225990,
+    "used_class_weights": true,
+    "validation_size": 0.15,
+    "random_seed": 42,
+    "final_train_accuracy": 0.8934229612350464,
+    "final_val_accuracy": 0.8694469332695007,
+    "final_train_loss": 0.28673437237739563,
+    "final_val_loss": 0.3658883273601532
+  }
+}
