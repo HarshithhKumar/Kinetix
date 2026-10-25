@@ -17,14 +17,11 @@ Kinetix classifies six everyday activities from accelerometer and gyroscope wind
 
 > **Evaluation note:** Reported metrics are measured on the UCI test set. Browser-based Live Phone mode is experimental and has not been quantitatively evaluated.
 
-## Results
+## Evaluation status
 
-| Metric | UCI test set |
-|---|---:|
-| **Accuracy** | **86.90%** |
-| **Macro F1** | **87.15%** |
+The reported accuracy is currently **under re-validation**. The committed metrics artifact reports 86.90% accuracy and 87.15% macro F1, while the repository's audit notes report a different result when evaluating the saved model with the documented inference path. The resume's approximately 97% figure is not reproduced by the current repository evidence.
 
-These results describe performance on the dataset's test split; they are not a claim of generalization across arbitrary phones or real-world environments.
+Until the model artifact, preprocessing path, and evaluation output are regenerated and verified together, this README does not present a single accuracy figure as a final result. The evaluation script is available at [backend/evaluate_model.py](backend/evaluate_model.py).
 
 ## Features
 
