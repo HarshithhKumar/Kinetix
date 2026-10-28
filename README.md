@@ -210,6 +210,43 @@ data/          Downloaded UCI dataset (not committed)
 - Live Phone requires a mobile browser with motion-sensor support.
 - Future work includes evaluating labeled phone recordings, improving axis alignment and gravity removal, and exploring on-device inference.
 
+## Technical implementation notes
+
+### Inference flow
+
+The backend separates HTTP handling, request schemas, dataset loading, preprocessing, and model inference into distinct modules:
+
+- `backend/app/main.py` defines the FastAPI routes and CORS middleware.
+- `backend/app/schemas.py` defines Pydantic request and response contracts.
+- `backend/app/data_loader.py` assembles the six UCI inertial signals and maps test labels to activity names.
+- `backend/app/preprocessing.py` validates the input shape, applies the persisted `StandardScaler`, and prepares the tensor for inference.
+- `backend/app/model.py` loads the Keras model and maps its six output scores to activity labels.
+
+A valid request contains 128 time steps, each with six ordered values: body acceleration X/Y/Z followed by gyroscope X/Y/Z. The window represents approximately 2.56 seconds at the UCI dataset's 50 Hz sampling rate. Feature order, units, filtering, gravity separation, and scaling are part of the model's input contract; arbitrary phone sensor readings should not be assumed compatible without equivalent preprocessing.
+
+### API behavior
+
+| Endpoint | Contract | Operational note |
+|---|---|---|
+| `GET /health` | Service status metadata | Confirms the API is responding; it does not measure model quality or dataset availability |
+| `GET /sample` | Sensor window, ground truth, shape, and feature names | Requires the UCI HAR dataset at the configured path |
+| `POST /predict` | Activity label, confidence, and class probabilities | Requires a complete 128 × 6 window |
+
+FastAPI generates the OpenAPI schema from the route and Pydantic definitions. Invalid request bodies are handled by schema validation, and invalid window dimensions are rejected by preprocessing. The sample endpoint reports dataset unavailability rather than silently substituting synthetic sensor data.
+
+### Frontend and evaluation
+
+The React/Vite frontend uses a shared dashboard shell across six routes. Recharts visualizations use saved evaluation artifacts or actual sample data where available. Model Analytics describes offline evaluation; a single live inference is not a benchmark. Prediction History is currently scoped to browser session storage and is not persistent server-side history.
+
+The model's reported metrics remain under re-validation because the saved metrics and audit findings need to be reconciled against the same model artifact, scaler, test inputs, and labels. Before quoting a headline score in a résumé or portfolio, regenerate the evaluation artifacts with the documented inference pipeline and verify that the results are reproducible.
+
+### Configuration and deployment
+
+- Use `frontend/.env.example` as the reference for configuring `VITE_API_URL`; keep local environment files and credentials out of Git.
+- Configure backend CORS origins for the actual frontend origin. Development settings should not automatically be treated as production security settings.
+- The model and scaler must exist at the paths resolved by backend configuration; the UCI dataset is required for `GET /sample`.
+- Static hosting should rewrite direct application routes to the frontend entry point so routes such as `/predict` and `/analytics` also work after a refresh.
+
 ## License and data
 
 Application code is intended for portfolio and educational use. Review the UCI dataset README and terms after downloading the dataset.
