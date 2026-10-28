@@ -29,8 +29,10 @@ Until the model artifact, preprocessing path, and evaluation output are regenera
 - **Dataset Demo:** run inference on a real UCI test window and compare the prediction with its ground-truth label.
 - **Live Phone (experimental):** capture browser motion data and submit a window for inference.
 - **Model insights:** class probabilities, sensor charts, confusion matrix, evaluation metrics, and training curves.
+- **Offline evaluation cards:** summary metrics are sourced from the saved UCI test-set artifact, not live inference.
 - **Session history:** view successful predictions in the current browser tab; entries are not stored by the backend.
 - **System diagnostics:** check the real FastAPI health response and clearly identify details the API does not expose.
+- **API documentation:** open the configured backend's `/docs` endpoint from the dashboard.
 - **Reproducible preprocessing:** fit the scaler on training data only and apply it consistently at inference.
 - **REST API:** expose health, sample, and prediction endpoints through FastAPI.
 
