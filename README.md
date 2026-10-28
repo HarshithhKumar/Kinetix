@@ -51,6 +51,42 @@ Until the model artifact, preprocessing path, and evaluation output are regenera
 
 The app supports direct path navigation and maps the older root hash links (such as `/#overview` and `/#evaluation`) to their corresponding pages. Production static hosts must rewrite unknown application paths to `index.html` for direct-route refreshes.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/live-prediction.png" alt="Live Prediction page" width="100%" />
+      <br />
+      <strong>Live Prediction</strong>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/model-analytics.png" alt="Model Analytics page" width="100%" />
+      <br />
+      <strong>Model Analytics</strong>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/prediction-history.png" alt="Prediction History page" width="100%" />
+      <br />
+      <strong>Prediction History</strong>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/sensor-explorer.png" alt="Sensor Explorer page" width="100%" />
+      <br />
+      <strong>Sensor Explorer</strong>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2">
+      <img src="docs/screenshots/system-status.png" alt="System Status page" width="100%" />
+      <br />
+      <strong>System Status</strong>
+    </td>
+  </tr>
+</table>
+
 ## Architecture
 
 ```mermaid
