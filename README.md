@@ -25,11 +25,29 @@ Until the model artifact, preprocessing path, and evaluation output are regenera
 
 ## Features
 
+- **Six-page dashboard:** Overview, Live Prediction, Model Analytics, Prediction History, Sensor Explorer, and System Status.
 - **Dataset Demo:** run inference on a real UCI test window and compare the prediction with its ground-truth label.
 - **Live Phone (experimental):** capture browser motion data and submit a window for inference.
 - **Model insights:** class probabilities, sensor charts, confusion matrix, evaluation metrics, and training curves.
+- **Session history:** view successful predictions in the current browser tab; entries are not stored by the backend.
+- **System diagnostics:** check the real FastAPI health response and clearly identify details the API does not expose.
 - **Reproducible preprocessing:** fit the scaler on training data only and apply it consistently at inference.
 - **REST API:** expose health, sample, and prediction endpoints through FastAPI.
+
+## Frontend routes
+
+| Route | Page | Data |
+|---|---|---|
+| `/overview` | Summary metrics and Dataset Demo quick classify | Saved evaluation artifact and live API requests |
+| `/predict` | Dataset Demo and experimental Live Phone workflows | `GET /sample`, `POST /predict` |
+| `/analytics` | Offline metrics, per-class results, confusion matrix, training curves | `frontend/public/assets/metrics.json` and `training_history.json` |
+| `/history` | Searchable current-tab prediction log | Browser `sessionStorage` only; no backend history endpoint exists |
+| `/sensors` | Accelerometer and gyroscope plots for an actual sample window | `GET /sample`; requires the UCI HAR dataset on the backend |
+| `/status` | FastAPI health, model-startup inference, and endpoint availability notes | `GET /health` |
+
+`GET /health` reports service health, not a separate model-readiness field. The model is loaded at API startup; a healthy response therefore indicates that the API process started successfully. Dataset availability is checked through `/sample`, not `/health`.
+
+The app supports direct path navigation and maps the older root hash links (such as `/#overview` and `/#evaluation`) to their corresponding pages. Production static hosts must rewrite unknown application paths to `index.html` for direct-route refreshes.
 
 ## Architecture
 
@@ -93,7 +111,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Configure `VITE_API_URL` in `frontend/.env.local` if the API is hosted somewhere else; use `frontend/.env.example` as the reference.
+Open [http://localhost:5173/overview](http://localhost:5173/overview). Configure `VITE_API_URL` in `frontend/.env.local` if the API is hosted somewhere else; use `frontend/.env.example` as the reference. When unset, the existing development default is `http://localhost:8000`.
 
 ### Tests and evaluation
 
@@ -108,6 +126,10 @@ python evaluate_model.py
 # Frontend production build
 cd frontend
 npm run build
+
+# Frontend lint and route tests
+npm run lint
+npm test
 ```
 
 For API integration testing, start the backend first, then run `python test_api.py` from `backend/`.
