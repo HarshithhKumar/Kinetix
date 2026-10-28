@@ -10,8 +10,12 @@ function resolveApiBaseUrl() {
   return DEFAULT_API_URL;
 }
 
+const API_BASE_URL = resolveApiBaseUrl();
+const REQUEST_TIMEOUT_MS = 10000;
+
 const api = axios.create({
-  baseURL: resolveApiBaseUrl(),
+  baseURL: API_BASE_URL,
+  timeout: REQUEST_TIMEOUT_MS,
   headers: {
     "Content-Type": "application/json",
   },
@@ -27,9 +31,10 @@ export const predictActivity = (sensorData, options = {}) =>
     ...(options.source ? { input_source: options.source } : {}),
   });
 
-export const getMetrics = () => axios.get("/assets/metrics.json");
+export const getMetrics = () =>
+  axios.get("/assets/metrics.json", { timeout: REQUEST_TIMEOUT_MS });
 
 export const getTrainingHistory = () =>
-  axios.get("/assets/training_history.json");
+  axios.get("/assets/training_history.json", { timeout: REQUEST_TIMEOUT_MS });
 
-export { DEFAULT_API_URL };
+export { API_BASE_URL, DEFAULT_API_URL, REQUEST_TIMEOUT_MS };
